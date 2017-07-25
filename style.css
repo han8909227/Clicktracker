@@ -1,6 +1,5 @@
 
 body section{
-  width: 960px;
   height: 300px;
 }
 
@@ -9,4 +8,15 @@ body section{
 img{
   width: 30%;
   height: 100%;
+}
+
+body{
+  width: 960px;
+}
+
+body li{
+  letter-spacing: 3px;
+  font-size: 200%;
+  font-family: Times serif;
+
 }
