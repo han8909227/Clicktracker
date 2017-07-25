@@ -1,6 +1,7 @@
 
 body section{
   height: 300px;
+  border: 2px solid blue;
 }
 
 
@@ -19,4 +20,9 @@ body li{
   font-size: 200%;
   font-family: Times serif;
 
+}
+
+canvas{
+  float:right;
+  font-size: 300%;
 }

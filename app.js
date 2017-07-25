@@ -7,12 +7,14 @@ Product.resultTable = document.getElementById('result');
 Product.resultList = document.getElementById('list');
 
 
-
 Product.allNames = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
 Product.all = [];
 Product.click = 0;
 Product.current = [];
 Product.previous = [];
+Product.clickedTimes = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+Product.chartDrawn = false;
+var prodChat;
 
 
 function Product(name){
@@ -22,7 +24,6 @@ function Product(name){
   this.shown = 0;
   Product.all.push(this);
 }
-
 
 
 function createObj(){
@@ -35,26 +36,8 @@ function createObj(){
 function randomProd(){
   var randomIndex = Math.floor(Math.random() * Product.allNames.length);
   return Product.all[randomIndex];
-
 }
 
-
-//listeners
-document.getElementById('imgSection').addEventListener('click',handleClick);
-// document.getElementById('prodTwo').addEventListener('click',handleClick);
-// document.getElementById('prodThree').addEventListener('click',handleClick);
-
-
-function handleClick(e){
-  Product.current = [];
-  Product.click++;
-  for(var i = 0; i < Product.all.length; i++){
-    if(e.target.alt === Product.all[i].name){
-      Product.all[i].timesClick++;
-    }
-  }
-  runSurvey();
-}
 
 
 function testObj(obj,a) {
@@ -66,7 +49,6 @@ function testObj(obj,a) {
   }
   obj.shown++;
   return false;
-
 }
 
 
@@ -112,67 +94,87 @@ function runSurvey(){
     runSecond();
     runThird();
     Product.previous = Product.current;
+    renderChart();
 
   } else{
     document.getElementById('imgSection').removeEventListener('click',randomProd);
-    // document.getElementById('prodTwo').removeEventListener('click',randomProd);
-    // document.getElementById('prodThree').removeEventListener('click',randomProd);
-    console.log(Product.click);
-    // renderTable();
-    renderList();
+    // renderList();
   }
 }
 
 
-
-function renderList(){
-
+function handleClick(e){
+  Product.current = [];
+  Product.click++;
   for(var i = 0; i < Product.all.length; i++){
+    if(e.target.alt === Product.all[i].name){
+      Product.all[i].timesClick++;
+      tallyVote(e.target.alt);
+    }
+  }
+  runSurvey();
+}
 
-    var liEl = document.createElement('li');
-    liEl.textContent = Product.all[i].timesClick + ' votes for the ' + Product.all[i].name;
-    Product.resultList.appendChild(liEl);
+
+// function renderList(){
+//   for(var i = 0; i < Product.all.length; i++){
+//     var liEl = document.createElement('li');
+//     liEl.textContent = Product.all[i].name + ' has been clicked ' + Product.all[i].timesClick + ' times and shown ' + Product.all[i].shown + ' times. ';
+//     Product.resultList.appendChild(liEl);
+//   }
+// }
+
+function tallyVote(vote){
+  for(var i = 0; i < Product.allNames.length; i++){
+    if(vote === Product.allNames[i]){
+      Product.clickedTimes[i] += 1;
+    }
 
   }
 }
 
 
 
-// function renderTable(){
-//   var trEl = document.createElement('tr');
-//
-//   var thEl = document.createElement('th');
-//   thEl.textContent = 'NAME';
-//   trEl.appendChild(thEl);
-//
-//   thEl = document.createElement('th');
-//   thEl.textContent = '# OF TIME CLICKED'
-//   trEl.appendChild(thEl);
-//
-//   thEl = document.createElement('th');
-//   thEl.textContent = 'RATIO';
-//   trEl.appendChild(thEl);
-//
-//   Product.resultTable.appendChild(trEl);
-//
-//   for(i = 0; i < Product.all.length; i++){
-//     trEl = document.createElement('tr');
-//     var tdEl = document.createElement('td');
-//     tdEl.textContent = Product.all[i].name;
-//     trEl.appendChild(tdEl);
-//
-//     tdEl = document.createElement('td');
-//     tdEl.textContent = Product.all[i].timesClick;
-//     trEl.appendChild(tdEl);
-//
-//     Product.resultTable.appendChild(trEl);
-//   }
-//
-// };
+function renderChart(){
+  var ctx = document.getElementById('barChart').getContext('2d');
+  prodChat = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Product.allNames,
+      datasets: [
+        {
+          label: 'Votes (num)',
+          backgroundColor: ['#86f6b0','#e7ff67','#fbe45d','#3e95cd','#d1f46e','#8e5ea2','#3cba9f','#e8c3b9','#c45850','#86f6b0','#e7ff67','#fbe45d','#3e95cd','#d1f46e','#8e5ea2','#3cba9f','#e8c3b9','#c45850'],
+          data: Product.clickedTimes
+        }        ]
+    },
+    options: {
+      scales: {
+        yAxes:[{
+          ticks:{
+            beginAtZero: true,
+            min:0,
+            max:10
+          }
 
+        }]
+      },
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'BusMall Product Popularity'
+      }
+    }
+  });
+  Product.chartDrawn = true;
+}
 
+//listeners
+document.getElementById('imgSection').addEventListener('click',handleClick);
 
-
+if(Product.chartDrawn){
+  prodChat.update();
+}
 
 
 createObj();
