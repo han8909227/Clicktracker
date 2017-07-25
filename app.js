@@ -40,9 +40,9 @@ function randomProd(){
 
 
 //listeners
-document.getElementById('prodOne').addEventListener('click',handleClick);
-document.getElementById('prodTwo').addEventListener('click',handleClick);
-document.getElementById('prodThree').addEventListener('click',handleClick);
+document.getElementById('imgSection').addEventListener('click',handleClick);
+// document.getElementById('prodTwo').addEventListener('click',handleClick);
+// document.getElementById('prodThree').addEventListener('click',handleClick);
 
 
 function handleClick(e){
@@ -70,37 +70,21 @@ function testObj(obj,a) {
 }
 
 
-
-function runSurvey(){
-  if(Product.click < 25){
-    runOne();
-    runSecond();
-    runThird();
-
-  } else{
-    document.getElementById('prodOne').removeEventListener('click',randomProd);
-    document.getElementById('prodTwo').removeEventListener('click',randomProd);
-    document.getElementById('prodThree').removeEventListener('click',randomProd);
-    console.log(Product.click);
-    // renderTable();
-    renderList();
-  }
-}
-
-
-
-
-
 function runOne(){
   var first = randomProd();
-  Product.imgOne.src = first.source;
-  Product.imgOne.alt = first.name;
-  Product.current.push(first);
+  if(!testObj(first,Product.previous)){
+    Product.imgOne.src = first.source;
+    Product.imgOne.alt = first.name;
+    Product.current.push(first);
+  } else{
+    runOne();
+  }
+
 }
 
 function runSecond(){
   var second = randomProd();
-  if(!testObj(second,Product.current)){
+  if(!testObj(second,Product.current) && (!testObj(second,Product.previous)) ){
     Product.imgTwo.src = second.source;
     Product.imgTwo.alt = second.name;
     Product.current.push(second);
@@ -111,7 +95,7 @@ function runSecond(){
 
 function runThird(){
   var third = randomProd();
-  if(!testObj(third,Product.current)){
+  if(!testObj(third,Product.current) && (!testObj(third,Product.previous))){
     Product.imgThree.src = third.source;
     Product.imgThree.alt = third.name;
     Product.current.push(third);
@@ -119,6 +103,27 @@ function runThird(){
     runThird();
   }
 }
+
+
+
+function runSurvey(){
+  if(Product.click < 25){
+    runOne();
+    runSecond();
+    runThird();
+    Product.previous = Product.current;
+
+  } else{
+    document.getElementById('imgSection').removeEventListener('click',randomProd);
+    // document.getElementById('prodTwo').removeEventListener('click',randomProd);
+    // document.getElementById('prodThree').removeEventListener('click',randomProd);
+    console.log(Product.click);
+    // renderTable();
+    renderList();
+  }
+}
+
+
 
 function renderList(){
 
