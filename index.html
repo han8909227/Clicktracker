@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html>
  <head>
   <meta charset="UTF-8">
   <title>Click-tracking Demo: 24 July 2017</title>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-
-
  </head>
 
  <body>
-  <h1>Choose your favorite product among the 3 that are showing!</h1>
-
+   <button id = "reset"><h1> BUS MALL </h1><br /> Click me to reset! </button>
+  <h2>Choose your favorite product among the 3 that are showing!</h2>
 
   <section id ="imgSection">
     <img id="prodOne" src="" />
@@ -20,16 +19,11 @@
     <img id='prodTwo' src="" />
 
     <img id='prodThree' src="" />
-
   </section>
 
-  <table id="result"></table>
   <ol id="list"></ol>
-  <button id='showList'></button>
-  <button id='showChart'></button>
 
   <canvas id="barChart" width="800px" height="400px"></canvas>
-
 
   <script src="app.js"></script>
  </body>

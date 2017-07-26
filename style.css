@@ -1,18 +1,19 @@
 
 body section{
   height: 300px;
-  border: 2px solid blue;
+  border: 2px double blue;
 }
 
 
 
 img{
-  width: 30%;
+  width: 33%;
   height: 100%;
 }
 
 body{
   width: 960px;
+  margin: 0px auto;
 }
 
 body li{
@@ -22,7 +23,22 @@ body li{
 
 }
 
-canvas{
-  float:right;
-  font-size: 300%;
+
+*{
+  background-color: #ede5dc;
+}
+
+button{
+  width: 100%;
+  border: 3px solid purple;
+}
+
+h1{
+  font-family: 'Permanent Marker', cursive;
+  font-size: 50px;
+  text-align: center;
+  align-items: center;
+  color: #42aaf4;
+  letter-spacing: 5px;
+  border-radius: 5px;
 }
