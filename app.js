@@ -89,7 +89,7 @@ function runThird(){
 
 
 function runSurvey(){
-  if(Product.click < 25){
+  if(Product.click < 26){
     runOne();
     runSecond();
     runThird();
@@ -129,7 +129,6 @@ function tallyVote(vote){
     if(vote === Product.allNames[i]){
       Product.clickedTimes[i] += 1;
     }
-
   }
 }
 
@@ -163,7 +162,8 @@ function renderChart(){
       title: {
         display: true,
         text: 'BusMall Product Popularity'
-      }
+      },
+      events:[]
     }
   });
   Product.chartDrawn = true;
