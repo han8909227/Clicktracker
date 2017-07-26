@@ -3,8 +3,8 @@
 Product.imgOne = document.getElementById('prodOne');
 Product.imgTwo = document.getElementById('prodTwo');
 Product.imgThree = document.getElementById('prodThree');
-Product.resultTable = document.getElementById('result');
 Product.resultList = document.getElementById('list');
+Product.imgSection = document.getElementById('imgSection')
 
 
 Product.allNames = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
@@ -12,7 +12,7 @@ Product.all = [];
 Product.click = 0;
 Product.current = [];
 Product.previous = [];
-Product.clickedTimes = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+Product.clickedTimes = [];
 Product.chartDrawn = false;
 var prodChat;
 
@@ -25,11 +25,21 @@ function Product(name){
   Product.all.push(this);
 }
 
+if(localStorage.locStore || localStorage.locStore === ""){
 
-function createObj(){
+  var get = JSON.parse(localStorage.getItem('locStore'));
+  Product.all = get;
+
+  var click = JSON.parse(localStorage.getItem('click'));
+  Product.click = click;
+
+  updateChartArrays();  //updates clickedTimes array with localStorage one
+
+} else{
   for(var i = 0;i < Product.allNames.length; i++){
     new Product(Product.allNames[i]);
   }
+
 }
 
 
@@ -37,7 +47,6 @@ function randomProd(){
   var randomIndex = Math.floor(Math.random() * Product.allNames.length);
   return Product.all[randomIndex];
 }
-
 
 
 function testObj(obj,a) {
@@ -75,6 +84,7 @@ function runSecond(){
   }
 }
 
+
 function runThird(){
   var third = randomProd();
   if(!testObj(third,Product.current) && (!testObj(third,Product.previous))){
@@ -87,19 +97,23 @@ function runThird(){
 }
 
 
-
 function runSurvey(){
-  if(Product.click < 26){
+  if(Product.click < 25){
     runOne();
     runSecond();
     runThird();
     Product.previous = Product.current;
-    renderChart();
 
   } else{
     document.getElementById('imgSection').removeEventListener('click',randomProd);
+    renderChart();
     // renderList();
   }
+}
+
+function resetSurvey(){
+  localStorage.clear();
+  Product.click = 0;
 }
 
 
@@ -109,12 +123,11 @@ function handleClick(e){
   for(var i = 0; i < Product.all.length; i++){
     if(e.target.alt === Product.all[i].name){
       Product.all[i].timesClick++;
-      tallyVote(e.target.alt);
+      updateChartArrays();
     }
   }
   runSurvey();
 }
-
 
 // function renderList(){
 //   for(var i = 0; i < Product.all.length; i++){
@@ -124,18 +137,19 @@ function handleClick(e){
 //   }
 // }
 
-function tallyVote(vote){
+function updateChartArrays(){
   for(var i = 0; i < Product.allNames.length; i++){
-    if(vote === Product.allNames[i]){
-      Product.clickedTimes[i] += 1;
-    }
+    Product.clickedTimes[i] = Product.all[i].timesClick;
   }
+  localStorage.setItem('locStore',JSON.stringify(Product.all));
+  localStorage.setItem('click',JSON.stringify(Product.click));
 }
-
 
 
 function renderChart(){
   var ctx = document.getElementById('barChart').getContext('2d');
+  Product.imgSection.replaceWith(ctx);
+
   prodChat = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -144,7 +158,7 @@ function renderChart(){
         {
           label: 'Votes (num)',
           backgroundColor: ['#86f6b0','#e7ff67','#fbe45d','#3e95cd','#d1f46e','#8e5ea2','#3cba9f','#e8c3b9','#c45850','#86f6b0','#e7ff67','#fbe45d','#3e95cd','#d1f46e','#8e5ea2','#3cba9f','#e8c3b9','#c45850'],
-          data: Product.clickedTimes
+          data: Product.clickedTimes //updated with localStorage
         }        ]
     },
     options: {
@@ -171,11 +185,10 @@ function renderChart(){
 
 //listeners
 document.getElementById('imgSection').addEventListener('click',handleClick);
+document.getElementById('reset').addEventListener('click',resetSurvey);
 
 if(Product.chartDrawn){
   prodChat.update();
 }
 
-
-createObj();
 runSurvey();
