@@ -4,8 +4,6 @@ body section{
   border: 2px double blue;
 }
 
-
-
 img{
   width: 33%;
   height: 100%;
@@ -20,17 +18,31 @@ body li{
   letter-spacing: 3px;
   font-size: 200%;
   font-family: Times serif;
-
 }
-
 
 *{
   background-color: #ede5dc;
 }
 
 button{
-  width: 100%;
   border: 3px solid purple;
+}
+
+button{
+  width: 100%;
+  cursor: pointer;
+  background: #78ccb1;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 50px;
+  text-align: center;
+  align-items: center;
+  color: white;
+  letter-spacing: 5px;
+  text-shadow: 0px 1px 1px;
+}
+
+button:hover,button:focus{
+  background-color:#0097bd
 }
 
 h1{
