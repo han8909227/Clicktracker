@@ -4,7 +4,7 @@ Product.imgOne = document.getElementById('prodOne');
 Product.imgTwo = document.getElementById('prodTwo');
 Product.imgThree = document.getElementById('prodThree');
 Product.resultList = document.getElementById('list');
-Product.imgSection = document.getElementById('imgSection')
+Product.imgSection = document.getElementById('imgSection');
 
 
 Product.allNames = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
@@ -14,7 +14,7 @@ Product.current = [];
 Product.previous = [];
 Product.clickedTimes = [];
 Product.chartDrawn = false;
-var prodChat;
+var prodChart;
 
 
 function Product(name){
@@ -70,7 +70,6 @@ function runOne(){
   } else{
     runOne();
   }
-
 }
 
 function runSecond(){
@@ -150,7 +149,7 @@ function renderChart(){
   var ctx = document.getElementById('barChart').getContext('2d');
   Product.imgSection.replaceWith(ctx);
 
-  prodChat = new Chart(ctx, {
+  prodChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: Product.allNames,
@@ -188,7 +187,7 @@ document.getElementById('imgSection').addEventListener('click',handleClick);
 document.getElementById('reset').addEventListener('click',resetSurvey);
 
 if(Product.chartDrawn){
-  prodChat.update();
+  prodChart.update();
 }
 
 runSurvey();
