@@ -5,8 +5,6 @@ Product.imgTwo = document.getElementById('prodTwo');
 Product.imgThree = document.getElementById('prodThree');
 Product.resultList = document.getElementById('list');
 Product.imgSection = document.getElementById('imgSection');
-
-
 Product.allNames = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
 Product.all = [];
 Product.click = 0;
@@ -17,7 +15,6 @@ Product.clickRatio = [];
 Product.chartDrawn = false;
 var prodChart;
 
-
 function Product(name){
   this.name = name;
   this.source = 'image/' + this.name + '.jpg';
@@ -26,14 +23,11 @@ function Product(name){
   Product.all.push(this);
 }
 
-if(localStorage.locStore || localStorage.locStore === ""){
-
+if(localStorage.locStore || localStorage.locStore === ''){
 //getting data from local storage if they exist
   Product.all = JSON.parse(localStorage.getItem('locStore'));
   Product.click = JSON.parse(localStorage.getItem('click'));
-
   updateChartArrays();  //updates clickedTimes array with localStorage one
-
 } else{
   for(var i = 0;i < Product.allNames.length; i++){
     new Product(Product.allNames[i]);
@@ -45,7 +39,6 @@ function randomProd(){
   var randomIndex = Math.floor(Math.random() * Product.allNames.length);
   return Product.all[randomIndex];
 }
-
 
 //testing function if an object is in the array
 function testObj(obj,a) {
@@ -81,7 +74,6 @@ function runSecond(){
   }
 }
 
-
 function runThird(){
   var third = randomProd();
   if(!testObj(third,Product.current) && (!testObj(third,Product.previous))){
@@ -92,7 +84,6 @@ function runThird(){
     runThird();
   }
 }
-
 
 function runSurvey(){
   if(Product.click < 25){
@@ -127,14 +118,6 @@ function handleClick(e){
   runSurvey();
 }
 
-// function renderList(){
-//   for(var i = 0; i < Product.all.length; i++){
-//     var liEl = document.createElement('li');
-//     liEl.textContent = Product.all[i].name + ' has been clicked ' + Product.all[i].timesClick + ' times and shown ' + Product.all[i].shown + ' times. ';
-//     Product.resultList.appendChild(liEl);
-//   }
-// }
-
 function updateChartArrays(){
   for(var i = 0; i < Product.allNames.length; i++){
     Product.clickedTimes[i] = Product.all[i].timesClick;
@@ -146,12 +129,6 @@ function updateChartArrays(){
 
 
 function renderChart(){
-  //sort the click ratio hgihest to lowest
-  // Product.clickRatio = Product.clickRatio.sort(function(a, b) { return b - a; });
-  // document.getElementById('choose').replaceWith(document.getElementById('topFive'));
-  // document.getElementById('topFive').innerHTML = "Top five products are: " +
-
-  //create bar chart element and replace it with the image section on page
   var ctx = document.getElementById('barChart').getContext('2d');
   Product.imgSection.replaceWith(ctx);
 
