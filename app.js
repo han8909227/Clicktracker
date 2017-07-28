@@ -4,7 +4,7 @@ Product.imgOne = document.getElementById('prodOne');
 Product.imgTwo = document.getElementById('prodTwo');
 Product.imgThree = document.getElementById('prodThree');
 Product.resultList = document.getElementById('list');
-Product.imgSection = document.getElementById('imgSection')
+Product.imgSection = document.getElementById('imgSection');
 
 
 Product.allNames = ['bag','banana','bathroom','boots','breakfast','bubblegum','chair','cthulhu','dog-duck','dragon','pen','pet-sweep','scissors','shark','sweep','tauntaun','unicorn','usb','water-can','wine-glass'];
@@ -13,8 +13,9 @@ Product.click = 0;
 Product.current = [];
 Product.previous = [];
 Product.clickedTimes = [];
+Product.clickRatio = [];
 Product.chartDrawn = false;
-var prodChat;
+var prodChart;
 
 
 function Product(name){
@@ -27,11 +28,9 @@ function Product(name){
 
 if(localStorage.locStore || localStorage.locStore === ""){
 
-  var get = JSON.parse(localStorage.getItem('locStore'));
-  Product.all = get;
-
-  var click = JSON.parse(localStorage.getItem('click'));
-  Product.click = click;
+//getting data from local storage if they exist
+  Product.all = JSON.parse(localStorage.getItem('locStore'));
+  Product.click = JSON.parse(localStorage.getItem('click'));
 
   updateChartArrays();  //updates clickedTimes array with localStorage one
 
@@ -39,16 +38,16 @@ if(localStorage.locStore || localStorage.locStore === ""){
   for(var i = 0;i < Product.allNames.length; i++){
     new Product(Product.allNames[i]);
   }
-
 }
 
-
+//generate a random product object
 function randomProd(){
   var randomIndex = Math.floor(Math.random() * Product.allNames.length);
   return Product.all[randomIndex];
 }
 
 
+//testing function if an object is in the array
 function testObj(obj,a) {
   var i = a.length;
   while (i--) {
@@ -60,7 +59,6 @@ function testObj(obj,a) {
   return false;
 }
 
-
 function runOne(){
   var first = randomProd();
   if(!testObj(first,Product.previous)){
@@ -70,7 +68,6 @@ function runOne(){
   } else{
     runOne();
   }
-
 }
 
 function runSecond(){
@@ -117,6 +114,7 @@ function resetSurvey(){
 }
 
 
+//handler function for click any pic
 function handleClick(e){
   Product.current = [];
   Product.click++;
@@ -140,6 +138,7 @@ function handleClick(e){
 function updateChartArrays(){
   for(var i = 0; i < Product.allNames.length; i++){
     Product.clickedTimes[i] = Product.all[i].timesClick;
+    Product.clickRatio[i] = (Product.all[i].timesClick) / (Product.click);
   }
   localStorage.setItem('locStore',JSON.stringify(Product.all));
   localStorage.setItem('click',JSON.stringify(Product.click));
@@ -147,10 +146,16 @@ function updateChartArrays(){
 
 
 function renderChart(){
+  //sort the click ratio hgihest to lowest
+  // Product.clickRatio = Product.clickRatio.sort(function(a, b) { return b - a; });
+  // document.getElementById('choose').replaceWith(document.getElementById('topFive'));
+  // document.getElementById('topFive').innerHTML = "Top five products are: " +
+
+  //create bar chart element and replace it with the image section on page
   var ctx = document.getElementById('barChart').getContext('2d');
   Product.imgSection.replaceWith(ctx);
 
-  prodChat = new Chart(ctx, {
+  prodChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: Product.allNames,
@@ -188,7 +193,7 @@ document.getElementById('imgSection').addEventListener('click',handleClick);
 document.getElementById('reset').addEventListener('click',resetSurvey);
 
 if(Product.chartDrawn){
-  prodChat.update();
+  prodChart.update();
 }
 
 runSurvey();
