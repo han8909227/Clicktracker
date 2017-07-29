@@ -131,7 +131,6 @@ function updateChartArrays(){
 function renderChart(){
   var ctx = document.getElementById('barChart').getContext('2d');
   Product.imgSection.replaceWith(ctx);
-
   prodChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -141,7 +140,7 @@ function renderChart(){
           label: 'Votes (num)',
           backgroundColor: ['#86f6b0','#e7ff67','#fbe45d','#3e95cd','#d1f46e','#8e5ea2','#3cba9f','#e8c3b9','#c45850','#86f6b0','#e7ff67','#fbe45d','#3e95cd','#d1f46e','#8e5ea2','#3cba9f','#e8c3b9','#c45850'],
           data: Product.clickedTimes //updated with localStorage
-        }        ]
+        }]
     },
     options: {
       scales: {
@@ -151,7 +150,6 @@ function renderChart(){
             min:0,
             max:10
           }
-
         }]
       },
       legend: { display: false },
