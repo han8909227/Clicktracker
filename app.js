@@ -13,7 +13,7 @@ Product.previous = [];
 Product.clickedTimes = [];
 Product.clickRatio = [];
 Product.chartDrawn = false;
-var prodChart;
+let prodChart;
 
 function Product(name){
   this.name = name;
@@ -29,20 +29,20 @@ if(localStorage.locStore || localStorage.locStore === ''){
   Product.click = JSON.parse(localStorage.getItem('click'));
   updateChartArrays();  //updates clickedTimes array with localStorage one
 } else{
-  for(var i = 0;i < Product.allNames.length; i++){
+  for(let i = 0;i < Product.allNames.length; i++){
     new Product(Product.allNames[i]);
   }
 }
 
 //generate a random product object
 function randomProd(){
-  var randomIndex = Math.floor(Math.random() * Product.allNames.length);
+  let randomIndex = Math.floor(Math.random() * Product.allNames.length);
   return Product.all[randomIndex];
 }
 
 //testing function if an object is in the array
 function testObj(obj,a) {
-  var i = a.length;
+  let i = a.length;
   while (i--) {
     if (a[i] === obj) {
       return true;
@@ -53,7 +53,7 @@ function testObj(obj,a) {
 }
 
 function runOne(){
-  var first = randomProd();
+  let first = randomProd();
   if(!testObj(first,Product.previous)){
     Product.imgOne.src = first.source;
     Product.imgOne.alt = first.name;
@@ -64,7 +64,7 @@ function runOne(){
 }
 
 function runSecond(){
-  var second = randomProd();
+  let second = randomProd();
   if(!testObj(second,Product.current) && (!testObj(second,Product.previous)) ){
     Product.imgTwo.src = second.source;
     Product.imgTwo.alt = second.name;
@@ -75,7 +75,7 @@ function runSecond(){
 }
 
 function runThird(){
-  var third = randomProd();
+  let third = randomProd();
   if(!testObj(third,Product.current) && (!testObj(third,Product.previous))){
     Product.imgThree.src = third.source;
     Product.imgThree.alt = third.name;
@@ -109,7 +109,7 @@ function resetSurvey(){
 function handleClick(e){
   Product.current = [];
   Product.click++;
-  for(var i = 0; i < Product.all.length; i++){
+  for(let i = 0; i < Product.all.length; i++){
     if(e.target.alt === Product.all[i].name){
       Product.all[i].timesClick++;
       updateChartArrays();
@@ -119,7 +119,7 @@ function handleClick(e){
 }
 
 function updateChartArrays(){
-  for(var i = 0; i < Product.allNames.length; i++){
+  for(let i = 0; i < Product.allNames.length; i++){
     Product.clickedTimes[i] = Product.all[i].timesClick;
     Product.clickRatio[i] = (Product.all[i].timesClick) / (Product.click);
   }
@@ -129,7 +129,7 @@ function updateChartArrays(){
 
 
 function renderChart(){
-  var ctx = document.getElementById('barChart').getContext('2d');
+  let ctx = document.getElementById('barChart').getContext('2d');
   Product.imgSection.replaceWith(ctx);
 
   prodChart = new Chart(ctx, {
